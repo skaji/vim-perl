@@ -349,7 +349,27 @@ else
   syn region perlHereDoc	start=+<<\s*''+ matchgroup=perlStringStartEnd           end=+^$+    contains=perlHereDocStart,@perlInterpSQ,perlNotEmptyLine
   syn region perlAutoload	matchgroup=perlStringStartEnd start=+<<\s*\(['"]\=\)\z(END_\%(SUB\|OF_FUNC\|OF_AUTOLOAD\)\)\1+ end=+^\z1$+ contains=ALL
 endif
-
+" indent here doc
+syn region perlIndentHereDocStart	matchgroup=perlStringStartEnd start=+<<\~\z(\I\i*\)+  end=+$+     contains=@perlTop oneline
+syn region perlIndentHereDocStart	matchgroup=perlStringStartEnd start=+<<\~\s*"\z([^\\"]*\%(\\.[^\\"]*\)*\)"+ end=+$+ contains=@perlTop oneline
+syn region perlIndentHereDocStart	matchgroup=perlStringStartEnd start=+<<\~\s*'\z([^\\']*\%(\\.[^\\']*\)*\)'+ end=+$+ contains=@perlTop oneline
+syn region perlIndentHereDocStart	matchgroup=perlStringStartEnd start=+<<\~\s*""+       end=+$+     contains=@perlTop oneline
+syn region perlIndentHereDocStart	matchgroup=perlStringStartEnd start=+<<\~\s*''+       end=+$+     contains=@perlTop oneline
+if exists("perl_fold")
+  syn region perlIndentHereDoc	start=+<<\~\z(\I\i*\)+ matchgroup=perlStringStartEnd      end=+^\s*\z1$+ contains=perlIndentHereDocStart,@perlInterpDQ fold extend
+  syn region perlIndentHereDoc	start=+<<\~\s*"\z([^\\"]*\%(\\.[^\\"]*\)*\)"+ matchgroup=perlStringStartEnd end=+^\s*\z1$+ contains=perlIndentHereDocStart,@perlInterpDQ fold extend
+  syn region perlIndentHereDoc	start=+<<\~\s*'\z([^\\']*\%(\\.[^\\']*\)*\)'+ matchgroup=perlStringStartEnd end=+^\s*\z1$+ contains=perlIndentHereDocStart,@perlInterpSQ fold extend
+  syn region perlIndentHereDoc	start=+<<\~\s*""+ matchgroup=perlStringStartEnd           end=+^\s*$+    contains=perlIndentHereDocStart,@perlInterpDQ,perlNotEmptyLine fold extend
+  syn region perlIndentHereDoc	start=+<<\~\s*''+ matchgroup=perlStringStartEnd           end=+^\s*$+    contains=perlIndentHereDocStart,@perlInterpSQ,perlNotEmptyLine fold extend
+  syn region perlAutoload	matchgroup=perlStringStartEnd start=+<<\~\s*\(['"]\=\)\z(END_\%(SUB\|OF_FUNC\|OF_AUTOLOAD\)\)\1+ end=+^\s*\z1$+ contains=ALL fold extend
+else
+  syn region perlIndentHereDoc	start=+<<\~\z(\I\i*\)+ matchgroup=perlStringStartEnd      end=+^\s*\z1$+ contains=perlIndentHereDocStart,@perlInterpDQ
+  syn region perlIndentHereDoc	start=+<<\~\s*"\z([^\\"]*\%(\\.[^\\"]*\)*\)"+ matchgroup=perlStringStartEnd end=+^\s*\z1$+ contains=perlIndentHereDocStart,@perlInterpDQ
+  syn region perlIndentHereDoc	start=+<<\~\s*'\z([^\\']*\%(\\.[^\\']*\)*\)'+ matchgroup=perlStringStartEnd end=+^\s*\z1$+ contains=perlIndentHereDocStart,@perlInterpSQ
+  syn region perlIndentHereDoc	start=+<<\~\s*""+ matchgroup=perlStringStartEnd           end=+^\s*$+    contains=perlIndentHereDocStart,@perlInterpDQ,perlNotEmptyLine
+  syn region perlIndentHereDoc	start=+<<\~\s*''+ matchgroup=perlStringStartEnd           end=+^\s*$+    contains=perlIndentHereDocStart,@perlInterpSQ,perlNotEmptyLine
+  syn region perlAutoload	matchgroup=perlStringStartEnd start=+<<\~\s*\(['"]\=\)\z(END_\%(SUB\|OF_FUNC\|OF_AUTOLOAD\)\)\1+ end=+^\s*\z1$+ contains=ALL
+endif
 
 " Class declarations
 "
@@ -481,6 +501,7 @@ HiLink perlVarNotInMatches	perlIdentifier
 HiLink perlVarSlash		perlIdentifier
 HiLink perlQQ			perlString
 HiLink perlHereDoc		perlString
+HiLink perlIndentHereDoc		perlString
 HiLink perlStringUnexpanded	perlString
 HiLink perlSubstitutionSQ	perlString
 HiLink perlSubstitutionGQQ	perlString
